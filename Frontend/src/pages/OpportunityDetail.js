@@ -1,0 +1,3 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';import { useParams } from 'react-router-dom';
+export default function OpportunityDetail(){ const {id}=useParams(); const [op,setOp]=useState(null); useEffect(()=>axios.get(`http://localhost:3001/api/opportunities/${id}`).then(r=>setOp(r.data)),[id]); if(!op) return<p>Carregando...</p>; return <div>{Object.entries(op).map(([k,v])=> <p key={k}><strong>{k}:</strong> {v}</p>)}</div>; }

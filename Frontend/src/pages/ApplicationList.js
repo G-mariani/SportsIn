@@ -1,0 +1,2 @@
+import React, {useEffect,useState} from 'react';import axios from 'axios';
+export default function ApplicationList(){ const [apps,setApps]=useState([]); useEffect(()=>axios.get('http://localhost:3001/api/applications').then(r=>setApps(r.data)),[]); return <div><h2>Minhas Candidaturas</h2><ul>{apps.map(a=><li key={a.id}>{`Oportunidade ${a.opportunity_id} - Status: ${a.status}`}</li>)}</ul></div>; }

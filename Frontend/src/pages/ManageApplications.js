@@ -1,0 +1,2 @@
+import React, {useEffect,useState} from 'react';import axios from 'axios';
+export default function ManageApplications(){ const [apps,setApps]=useState([]); useEffect(()=>axios.get('http://localhost:3001/api/applications').then(r=>setApps(r.data)),[]); return <div><h2>Gerenciar Candidaturas</h2><ul>{apps.map(a=><li key={a.id}>{`Atleta ${a.athlete_id} - Oportunidade ${a.opportunity_id} - ${a.status}`}</li>)}</ul></div>; }

@@ -1,39 +1,120 @@
-# Sistema de Gestão de Usuários
-**Gabriel Mariani Ribeiro Santos**
+🏗️ Arquitetura e Tecnologias
+Backend
 
-Este projeto é um sistema web CRUD para gestão de cadastro de usuários, desenvolvido utilizando:
+Node.js + Express
 
-- **Frontend:** React
-- **Backend:** Node.js com Express
-- **Banco de Dados:** MySQL
+MySQL (banco crud_db)
 
-## Pré-Requisitos
+bcrypt para hash de senhas
 
-- Node.js instalado
-- MySQL instalado e configurado
+jsonwebtoken (JWT) para autenticação
 
-## Instruções para Rodar o Projeto
+dotenv para variáveis de ambiente
 
-### 1. Clonar o Repositório
+Estrutura de rotas modularizada em:
 
-```bash
-git clone https://github.com/seuusuario/sistema-crud.git
+/auth (registro e login)
 
-### 2. Baixar o .sql disponibilizado na entrega e importa-lo no seu SQL workbench.
-### 1. Clonar o Repositório
-### 3. No seu editor acesse o Backend e rode os seguintes comandos:
-- npm install
-- npm start
+/api/athletes, /api/companies, /api/opportunities, /api/applications
 
-### 4. Após esta etapa deve receber o segiunte retorno no seu terminal:
-- Servidor rodando na porta 3001
-- Conexão com o MySQL estabelecida com sucesso!
+Middleware authenticateToken para proteger todas as rotas da API.
 
-### 5. Faça o mesmo para o Frontend e será redirecionado
+Frontend
 
-### 6. Agora teste as funcionalidades CRUD do sistema, voce tem as seguintes opções:
-- Cadastrar novo usuário;
-- Exibir detalhes do usuário;
-- Editar informações do usuário;
-- Atualizar informações editadas;
-- Excluir usuário;
+React (Create React App)
+
+React Router v6 para navegação
+
+Axios para comunicação HTTP
+
+JWT salvo em localStorage e injetado nos headers
+
+Validações de formulário (CPF 13 dígitos, CNPJ 14 dígitos, e-mail, selects de gênero, etc.)
+
+Páginas divididas em pages/ e components/.
+
+📂 Estrutura de Pastas
+yaml
+Copiar
+Editar
+frontend/
+├── src/
+│   ├── components/
+│   │   └── ProtectedRoute.js
+│   ├── pages/
+│   │   ├── Auth:
+│   │   │   ├── Login.js
+│   │   │   ├── RegisterSelection.js
+│   │   │   ├── RegisterAthlete.js
+│   │   │   └── RegisterCompany.js
+│   │   ├── Athlete:
+│   │   │   ├── AthleteList.js
+│   │   │   ├── AthleteForm.js
+│   │   │   └── AthleteDetail.js
+│   │   ├── Company:
+│   │   │   ├── CompanyList.js
+│   │   │   ├── CompanyForm.js
+│   │   │   └── CompanyDetail.js
+│   │   ├── Opportunity:
+│   │   │   ├── OpportunityList.js
+│   │   │   ├── OpportunityForm.js
+│   │   │   └── OpportunityDetail.js
+│   │   └── Application:
+│   │       ├── ApplicationList.js
+│   │       └── ManageApplications.js
+│   ├── App.js
+│   └── index.js
+└── package.json
+
+backend/
+├── server.js
+├── package.json
+├── .env             (JWT_SECRET, JWT_EXPIRES_IN, DB credentials)
+└── db.sql           (cria tabelas users, athletes, companies, opportunities, applications)
+🗄️ Modelo de Dados (MySQL)
+users
+
+id, password, role (ENUM 'athlete'/'company'), created_at
+
+athletes
+
+id, user_id → users.id, name, anoNascimento, genero, cidade, cpf
+
+companies
+
+id, user_id → users.id, name, cnpj, razaoSocial, cidade, email
+
+opportunities
+
+id, company_id → companies.id, title, description, requirements, created_at, deadline
+
+applications
+
+id, athlete_id → athletes.id, opportunity_id → opportunities.id, status, applied_at
+
+🔄 Fluxos Implementados
+Registro
+
+Usuário escolhe Atleta ou Empresa
+
+Formulário específico com validações e cadastro em duas tabelas (users + perfil)
+
+Login
+
+CPF (13 dígitos) para atleta ou CNPJ (14 dígitos) para empresa
+
+Validação de formato no cliente e busca com JOIN no backend
+
+Retorno de JWT e redirecionamento para a área protegida
+
+Áreas Protegidas
+
+CRUD completo para atletas, empresas, oportunidades e candidaturas
+
+Rotas front-end acessíveis apenas com token válido
+
+CRUD & Navegação
+
+Listar, criar, editar e detalhar cada entidade
+
+Menu global no cabeçalho para navegar entre seções
