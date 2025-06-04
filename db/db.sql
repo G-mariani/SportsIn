@@ -1,7 +1,7 @@
--- Database definition for SportsIn (crud_db)
+-- Database definition for SportsIn (sportsin)
 
-CREATE DATABASE IF NOT EXISTS `crud_db`;
-USE `crud_db`;
+CREATE DATABASE IF NOT EXISTS `sportsin`;
+USE `sportsin`;
 
 -- Users table: authentication and role
 CREATE TABLE IF NOT EXISTS `users` (

@@ -1,4 +1,3 @@
-/* src/pages/Login.js */
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
@@ -9,10 +8,9 @@ export default function Login() {
   const [error, setError]           = useState('');
   const navigate                    = useNavigate();
 
-  // valida CPF ou CNPJ
   const validateId = (id) => {
-    if (/^\d{11}$/.test(id)) return 'athlete';    // CPF válido
-    if (/^\d{14}$/.test(id)) return 'company';    // CNPJ válido
+    if (/^\d{11}$/.test(id)) return 'athlete';
+    if (/^\d{14}$/.test(id)) return 'company';
     return null;
   };
 
@@ -20,15 +18,12 @@ export default function Login() {
     e.preventDefault();
     const role = validateId(identifier);
     if (!role) {
-      setError('Informe um CPF (13 dígitos) ou CNPJ (14 dígitos) válidos.');
+      setError('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válidos.');
       return;
     }
     try {
-      // envia o login com { identifier, password, role }
       const res = await axios.post('http://localhost:3001/auth/login', {
-        identifier,
-        password,
-        role
+        identifier, password, role
       });
       localStorage.setItem('token', res.data.token);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
@@ -39,34 +34,50 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>CPF/CNPJ:</label><br/>
-          <input
-            type="text"
-            value={identifier}
-            onChange={e => setIdentifier(e.target.value)}
-            placeholder="Só números"
-            required
-          />
-        </div>
-        <div>
-          <label>Senha:</label><br/>
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Entrar</button>
-      </form>
-      <p>
-        Não tem conta? <Link to="/register">Registre-se</Link>
-      </p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Login</h2>
+        {error && (
+          <p className="bg-red-100 text-red-700 px-3 py-2 rounded mb-4">
+            {error}
+          </p>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">CPF/CNPJ</label>
+            <input
+              type="text"
+              value={identifier}
+              onChange={e => setIdentifier(e.target.value)}
+              placeholder="Somente números"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Senha</label>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+          >
+            Entrar
+          </button>
+        </form>
+        <p className="mt-4 text-sm text-center text-gray-600">
+          Não tem conta?{' '}
+          <Link to="/register" className="text-blue-600 hover:underline">
+            Registre-se
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
