@@ -42,17 +42,21 @@ function App() {
 
         <Route path="/*" element={
           <ProtectedRoute>
-            <header>
-              <h1>SportsIn</h1>
-              <nav>
-                <Link to="/athletes">Atletas</Link> | 
-                <Link to="/companies">Empresas</Link> | 
-                <Link to="/opportunities">Oportunidades</Link> | 
-                <Link to="/applications">Minhas Candidaturas</Link> | 
-                <Link to="/manage-applications">Gerenciar Candidaturas</Link> | 
-                <button onClick={handleLogout}>Logout</button>
-              </nav>
-            </header>
+            <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 shadow-lg">
+             <h1 className="text-3xl font-bold">SportsIn</h1>
+             <nav className="mt-2 space-x-4">
+               <Link className="hover:underline" to="/athletes">Atletas</Link>
+               <Link className="hover:underline" to="/companies">Empresas</Link>
+               <Link className="hover:underline" to="/opportunities">Oportunidades</Link>
+               <Link className="hover:underline" to="/applications">Minhas Candidaturas</Link>
+               <button
+                 onClick={handleLogout}
+                 className="ml-4 px-3 py-1 bg-red-500 rounded hover:bg-red-600 transition"
+               >
+                 Logout
+               </button>
+             </nav>
+           </header>
             <main>
               <Routes>
                 <Route path="athletes" element={<AthleteList />} />
