@@ -1,6 +1,6 @@
-/* src/pages/ApplicationList.js */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function ApplicationList() {
   const [appsWithInfo, setAppsWithInfo] = useState([]);
@@ -15,8 +15,7 @@ export default function ApplicationList() {
         const myApps = res.data.filter(
           (app) => app.athlete_id.toString() === athleteId
         );
-
-        // Para cada candidatura, busca o título da oportunidade
+        // Para cada candidatura, busca o título e deadline da oportunidade
         const detailed = await Promise.all(
           myApps.map(async (app) => {
             try {
@@ -25,23 +24,37 @@ export default function ApplicationList() {
               );
               return {
                 id: app.id,
+                opportunityId: app.opportunity_id,
                 opportunityTitle: opRes.data.title,
                 deadline: opRes.data.deadline,
               };
             } catch {
               return {
                 id: app.id,
+                opportunityId: app.opportunity_id,
                 opportunityTitle: 'Título não disponível',
                 deadline: null,
               };
             }
           })
         );
-
         setAppsWithInfo(detailed);
       })
       .catch(() => setError('Erro ao carregar suas candidaturas.'));
   }, []);
+
+  const handleUnapply = (applicationId) => {
+    if (!window.confirm('Deseja realmente desfazer esta candidatura?')) return;
+    axios
+      .delete(`http://localhost:3001/api/applications/${applicationId}`)
+      .then(() => {
+        // Remove a candidatura da lista local
+        setAppsWithInfo((prev) =>
+          prev.filter((a) => a.id !== applicationId)
+        );
+      })
+      .catch(() => alert('Erro ao desfazer candidatura'));
+  };
 
   if (error) {
     return (
@@ -77,7 +90,20 @@ export default function ApplicationList() {
                   </p>
                 )}
               </div>
-              <p className="text-sm text-gray-600">ID: {app.id}</p>
+              <div className="flex gap-2">
+                <Link
+                  to={`/opportunities/${app.opportunityId}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  Detalhes
+                </Link>
+                <button
+                  onClick={() => handleUnapply(app.id)}
+                  className="text-red-600 hover:underline"
+                >
+                  Desfazer
+                </button>
+              </div>
             </div>
           ))}
         </div>

@@ -49,6 +49,7 @@ function App() {
                <Link className="hover:underline" to="/companies">Empresas</Link>
                <Link className="hover:underline" to="/opportunities">Oportunidades</Link>
                <Link className="hover:underline" to="/applications">Minhas Candidaturas</Link>
+               
                <button
                  onClick={handleLogout}
                  className="ml-4 px-3 py-1 bg-red-500 rounded hover:bg-red-600 transition"

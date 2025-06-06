@@ -107,12 +107,20 @@ app.post('/auth/login', async (req, res) => {
     if (!valid) {
       return res.status(401).json({ error: 'Senha incorreta.' });
     }
-    const token = jwt.sign({ id: user.id, role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
-    res.json({ message: 'Autenticado com sucesso!', token });
+    const token = jwt.sign({ id: user.id, role }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN
+    });
+    return res.json({
+      message: 'Autenticado com sucesso!',
+      token,
+      role,
+      userId: user.id
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
+
 
 // --- Endpoints de Atletas ---
 app.get('/api/athletes', authenticateToken, async (req, res) => {
@@ -281,6 +289,14 @@ app.get('/api/applications', authenticateToken, async (req, res) => {
   try {
     const [results] = await db.promise().query('SELECT * FROM applications');
     res.json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.delete('/api/applications/:id', authenticateToken, async (req, res) => {
+  try {
+    await db.promise().query('DELETE FROM applications WHERE id = ?', [req.params.id]);
+    res.json({ message: 'Candidatura removida com sucesso!' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

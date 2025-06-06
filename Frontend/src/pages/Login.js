@@ -25,9 +25,18 @@ export default function Login() {
       const res = await axios.post('http://localhost:3001/auth/login', {
         identifier, password, role
       });
+
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('role', res.data.role);
+      localStorage.setItem('userId', res.data.userId);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
-      navigate(role === 'athlete' ? '/athletes' : '/companies');
+
+      // Redireciona conforme role
+      if (res.data.role === 'athlete') {
+        navigate('/athletes');
+      } else {
+        navigate('/companies');
+      }
     } catch (err) {
       setError(err.response?.data?.error || 'Erro no login');
     }
