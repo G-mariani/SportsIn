@@ -4,6 +4,10 @@ import './index.css';
 import App from './app';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'animate.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './Register.css';  // ou importe apenas no próprio componente
 
 // Ao carregar a app, se já tiver token no localStorage,
 // seta o header para todas as requisições.
