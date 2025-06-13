@@ -4,9 +4,10 @@ import axios from 'axios';
 
 // auth pages
 import Login from './pages/Login';
-import RegisterSelection from './pages/RegisterSelection';
-import RegisterAthlete from './pages/RegisterAthlete';
-import RegisterCompany from './pages/RegisterCompany';
+import Register from './pages/Register';
+// import RegisterSelection from './pages/RegisterSelection';
+// import RegisterAthlete from './pages/RegisterAthlete';
+// import RegisterCompany from './pages/RegisterCompany';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // entity pages
@@ -32,13 +33,16 @@ function App() {
     window.location.href = '/login';
   };
 
+//        <Route path="/register" element={<RegisterSelection />} />
+//        <Route path="/register/athlete" element={<RegisterAthlete />} />
+//        <Route path="/register/company" element={<RegisterCompany />} />
+
+
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<RegisterSelection />} />
-        <Route path="/register/athlete" element={<RegisterAthlete />} />
-        <Route path="/register/company" element={<RegisterCompany />} />
+        <Route path="/register" element={<Register />} />
 
         <Route path="/*" element={
           <ProtectedRoute>

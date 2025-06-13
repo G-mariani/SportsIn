@@ -1,0 +1,183 @@
+        :root {
+            --primary-color: #0071f8;
+            --secondary-color: #ee626b;
+            --dark-color: #1e1e1e;
+            --light-color: #f7f7f7;
+        }
+        
+        .login-section {
+            background: linear-gradient(135deg, rgba(0,113,248,0.1) 0%, rgba(238,98,107,0.1) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 50px 0;
+        }
+        
+        .login-card {
+            background-color: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .login-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .login-header img {
+            max-width: 120px;
+            margin-bottom: 20px;
+        }
+        
+        .login-header h2 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .login-body {
+            padding: 40px;
+        }
+        
+        .form-control {
+            height: 50px;
+            border-radius: 25px;
+            padding: 0 25px;
+            border: 1px solid #e7e7e7;
+            margin-bottom: 20px;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(0,113,248,0.25);
+        }
+        
+        .login-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            height: 50px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #d8555d;
+            transform: translateY(-2px);
+        }
+        
+        .social-login {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .social-login::before,
+        .social-login::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e7e7e7;
+            margin: auto;
+        }
+        
+        .social-login::before {
+            margin-right: 10px;
+        }
+        
+        .social-login::after {
+            margin-left: 10px;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+        }
+        
+        .facebook {
+            background-color: #3b5998;
+        }
+        
+        .google {
+            background-color: #db4437;
+        }
+        
+        .twitter {
+            background-color: #1da1f2;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .login-footer a {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Efeito de onda animado */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        
+        .wave svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 150px;
+        }
+        
+        .wave .shape-fill {
+            fill: var(--primary-color);
+        }
+        
+        @media (max-width: 767px) {
+            .login-section {
+                padding: 30px 0;
+            }
+            
+            .login-body {
+                padding: 30px 20px;
+            }
+        }

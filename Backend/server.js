@@ -37,51 +37,77 @@ function authenticateToken(req, res, next) {
 // Rota de registro (atleta ou empresa)
 app.post('/auth/register', async (req, res) => {
   const {
-    role, name, anoNascimento, genero, cidade,
-    cpf, cnpj, razaoSocial, email, password
+    role,
+    name,
+    email,
+    password,
+    // campos de atleta:
+    cpf,
+    anoNascimento,
+    cidade,
+    genero,
+    // campos de empresa:
+    cnpj,
+    telefone,
+    razaoSocial
   } = req.body;
 
-  // Valida campos obrigatórios
+  // valida campos obrigatórios
   if (role === 'athlete') {
-    if (!name || !anoNascimento || !genero || !cidade || !cpf || !password) {
-      return res.status(400).json({ error: 'Todos os campos são obrigatórios para atleta.' });
+    if (
+      !name || !email || !password ||
+      !cpf || !anoNascimento || !cidade || !genero
+    ) {
+      return res
+        .status(400)
+        .json({ error: 'Todos os campos são obrigatórios para atleta.' });
     }
   } else if (role === 'company') {
-    if (!name || !cnpj || !razaoSocial || !cidade || !email || !password) {
-      return res.status(400).json({ error: 'Todos os campos são obrigatórios para empresa.' });
+    if (
+      !name || !email || !password ||
+      !cnpj || !razaoSocial || !telefone || !cidade
+    ) {
+      return res
+        .status(400)
+        .json({ error: 'Todos os campos são obrigatórios para empresa.' });
     }
   } else {
     return res.status(400).json({ error: 'Role inválido.' });
   }
 
   try {
-    // Cria hash da senha
+    // hash da senha
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    // Insere em users
+    // insere em users
     const [userResult] = await db.promise().query(
       'INSERT INTO users (password, role) VALUES (?, ?)',
       [hash, role]
     );
     const userId = userResult.insertId;
 
-    // Insere perfil
+    // insere perfil específico
     if (role === 'athlete') {
       await db.promise().query(
-        'INSERT INTO athletes (user_id, name, anoNascimento, genero, cidade, cpf) VALUES (?, ?, ?, ?, ?, ?)',
-        [userId, name, anoNascimento, genero, cidade, cpf]
+        `INSERT INTO athletes
+           (user_id, name, email, cpf, anoNascimento, cidade, genero)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [userId, name, email, cpf, anoNascimento, cidade, genero]
       );
     } else {
       await db.promise().query(
-        'INSERT INTO companies (user_id, name, cnpj, razaoSocial, cidade, email) VALUES (?, ?, ?, ?, ?, ?)',
-        [userId, name, cnpj, razaoSocial, cidade, email]
+        `INSERT INTO companies
+           (user_id, name, email, cnpj, phone, razaoSocial, cidade)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [userId, name, email, cnpj, telefone, razaoSocial, cidade]
       );
     }
 
-    res.status(201).json({ message: 'Registrado com sucesso!' });
+    return res.status(201).json({ message: 'Registrado com sucesso!' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    return res.status(500).json({ error: err.message });
   }
 });
 
